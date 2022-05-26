@@ -47,6 +47,8 @@ Route::group(['namespace'=>'Api'], function () {
     // Route::get('servicedetails/{id}', [CategoriesController::class,'servicedetails']);
 
 
+    Route::get('payment/callback', [OrderController::class, 'callback'])->name('payment.callback');
+
     Route::fallback(function(){
         return response()->json(['message' => 'Not Found!'], 404);
     });
