@@ -66,7 +66,6 @@ class UserController extends Controller
             'email' => 'required|email:filter|unique:users',
             'password' => 'required|confirmed|min:6|required_with:password_confirmation',
             'password_confirmation' => 'min:6|same:password',
-            // 'phone'=>'required|min:4|max:190|unique:users',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first()], 400);
@@ -78,7 +77,10 @@ class UserController extends Controller
 
         $admins = User::where('type','admin')->get();
 
-        return response()->json(['message'=>trans('auth.messages.success_register'),'data'=>new UserResource($user)]);
+        return response()->json(['message'=>trans('auth.messages.success_register'),'data'=>$data = [
+            'token'  => $user->createToken('MyApp')->plainTextToken,
+            'user-data' => new UserResource($user)
+        ]]);
     }
 
 
